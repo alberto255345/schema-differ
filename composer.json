@@ -1,0 +1,28 @@
+{
+    "name": "seu-vendor/schema-differ",
+    "description": "Framework para gerar migrations de diff comparando schema esperado e o atual do banco de dados",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Seu Nome",
+            "email": "seu.email@exemplo.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "illuminate/database": "^8.0 || ^9.0 || ^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DiffFramework\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DiffFramework\\ServiceProvider"
+            ]
+        }
+    }
+}
