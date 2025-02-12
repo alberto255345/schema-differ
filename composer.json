@@ -1,12 +1,12 @@
 {
-    "name": "seu-vendor/schema-differ",
+    "name": "alberto255345/schema-differ",
     "description": "Framework para gerar migrations de diff comparando schema esperado e o atual do banco de dados",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Seu Nome",
-            "email": "seu.email@exemplo.com"
+            "name": "Alberto Vitoriano",
+            "email": "alberto.vitoriano@suncoretech.com.br"
         }
     ],
     "require": {
