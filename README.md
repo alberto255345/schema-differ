@@ -1,7 +1,7 @@
 # Schema Differ
 
-[![Latest Version](https://img.shields.io/packagist/v/seu-vendor/schema-differ.svg?style=flat-square)](https://packagist.org/packages/seu-vendor/schema-differ)
-[![License](https://img.shields.io/packagist/l/seu-vendor/schema-differ.svg?style=flat-square)](LICENSE)
+[![Latest Version](https://img.shields.io/packagist/v/alberto255345/schema-differ.svg?style=flat-square)](https://packagist.org/packages/alberto255345/schema-differ)
+[![License](https://img.shields.io/packagist/l/alberto255345/schema-differ.svg?style=flat-square)](LICENSE)
 
 O **Schema Differ** é um framework para gerar _migrations_ de diff comparando o _schema_ esperado (definido pelas suas migrations ou entidades) com o _schema_ atual do banco de dados. Ele automatiza a criação de migrations com métodos `up` e `down` para sincronizar o banco conforme as alterações detectadas, facilitando a manutenção e evolução do seu banco de dados.
 
@@ -21,4 +21,4 @@ O **Schema Differ** é um framework para gerar _migrations_ de diff comparando o
 Adicione o pacote ao seu projeto utilizando o Composer:
 
 ```bash
-composer require seu-vendor/schema-differ
+composer require alberto255345/schema-differ
