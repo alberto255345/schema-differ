@@ -1,7 +1,7 @@
 {
     "name": "alberto255345/schema-differ",
     "description": "Framework para gerar migrations de diff comparando schema esperado e o atual do banco de dados",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "type": "library",
     "license": "MIT",
     "authors": [
