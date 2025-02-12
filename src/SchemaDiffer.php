@@ -1,10 +1,7 @@
 <?php
-
 namespace DiffFramework;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 
 class SchemaDiffer
 {
@@ -13,7 +10,7 @@ class SchemaDiffer
 
     public function __construct()
     {
-        $this->dbSchema = $this->getDatabaseSchema();
+        $this->dbSchema       = $this->getDatabaseSchema();
         $this->expectedSchema = $this->getExpectedSchema();
     }
 
@@ -58,7 +55,7 @@ class SchemaDiffer
         $diff = [];
 
         foreach ($this->expectedSchema as $tableName => $tableDefinition) {
-            if (!isset($this->dbSchema[$tableName])) {
+            if (! isset($this->dbSchema[$tableName])) {
                 $diff['tables'][$tableName] = [
                     'action'     => 'create',
                     'definition' => $tableDefinition,
@@ -68,7 +65,7 @@ class SchemaDiffer
                 $expectedColumns = $tableDefinition['columns'];
 
                 foreach ($expectedColumns as $column => $definition) {
-                    if (!isset($dbColumns[$column])) {
+                    if (! isset($dbColumns[$column])) {
                         $diff['tables'][$tableName]['columns'][$column] = [
                             'action'     => 'add',
                             'definition' => $definition,
@@ -93,7 +90,6 @@ class SchemaDiffer
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 class DiffMigrationGenerated extends Migration
@@ -120,7 +116,7 @@ PHP;
         $commands = "";
         if (isset($diff['tables'])) {
             foreach ($diff['tables'] as $tableName => $tableDiff) {
-                if ($tableDiff['action'] === 'create') {
+                if (isset($tableDiff['action']) && $tableDiff['action'] === 'create') {
                     $commands .= "        Schema::create('{$tableName}', function (Blueprint \$table) {\n";
                     foreach ($tableDiff['definition']['columns'] as $column => $def) {
                         $type = $def['type'];
@@ -150,11 +146,11 @@ PHP;
         $commands = "";
         if (isset($diff['tables'])) {
             foreach ($diff['tables'] as $tableName => $tableDiff) {
-                if ($tableDiff['action'] === 'create') {
+                if (isset($tableDiff['action']) && $tableDiff['action'] === 'create') {
                     $commands .= "        Schema::dropIfExists('{$tableName}');\n\n";
                 } elseif (isset($tableDiff['columns'])) {
                     foreach ($tableDiff['columns'] as $column => $colDiff) {
-                        if ($colDiff['action'] === 'add') {
+                        if (isset($colDiff['action']) && $colDiff['action'] === 'add') {
                             $commands .= "        Schema::table('{$tableName}', function (Blueprint \$table) {\n";
                             $commands .= "            \$table->dropColumn('{$column}');\n";
                             $commands .= "        });\n\n";
