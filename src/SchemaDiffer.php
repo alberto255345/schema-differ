@@ -19,12 +19,10 @@ class SchemaDiffer
 
     /**
      * Extrai o schema atual do banco de dados.
-     * Aqui você pode usar consultas à information_schema (no MySQL, por exemplo)
-     * ou funções do próprio Laravel para obter essa informação.
+     * Exemplo simplificado com dados fictícios.
      */
     protected function getDatabaseSchema()
     {
-        // Exemplo simplificado com dados fictícios.
         return [
             'users' => [
                 'columns' => [
@@ -37,11 +35,10 @@ class SchemaDiffer
 
     /**
      * Extrai o schema esperado a partir das migrations ou das entidades.
-     * Aqui, para simplificar, estamos utilizando um array fixo.
+     * Exemplo simplificado com dados fictícios.
      */
     protected function getExpectedSchema()
     {
-        // Exemplo simplificado com dados fictícios.
         return [
             'users' => [
                 'columns' => [
@@ -61,14 +58,12 @@ class SchemaDiffer
         $diff = [];
 
         foreach ($this->expectedSchema as $tableName => $tableDefinition) {
-            // Se a tabela não existe no banco, marcar para criação
             if (!isset($this->dbSchema[$tableName])) {
                 $diff['tables'][$tableName] = [
                     'action'     => 'create',
                     'definition' => $tableDefinition,
                 ];
             } else {
-                // Tabela existe: verifique diferenças nas colunas
                 $dbColumns       = $this->dbSchema[$tableName]['columns'];
                 $expectedColumns = $tableDefinition['columns'];
 
@@ -122,53 +117,52 @@ PHP;
      */
     protected function generateUpCommands(array $diff)
     {
-        \$commands = "";
-        if (isset(\$diff['tables'])) {
-            foreach (\$diff['tables'] as \$tableName => \$tableDiff) {
-                if (\$tableDiff['action'] === 'create') {
-                    \$commands .= "        Schema::create('{$tableName}', function (Blueprint \$table) {\n";
-                    foreach (\$tableDiff['definition']['columns'] as \$column => \$def) {
-                        // Aqui assumimos que o tipo mapeia diretamente para um método do Blueprint.
-                        \$type = \$def['type'];
-                        \$commands .= "            \$table->{$type}('{$column}');\n";
+        $commands = "";
+        if (isset($diff['tables'])) {
+            foreach ($diff['tables'] as $tableName => $tableDiff) {
+                if ($tableDiff['action'] === 'create') {
+                    $commands .= "        Schema::create('{$tableName}', function (Blueprint \$table) {\n";
+                    foreach ($tableDiff['definition']['columns'] as $column => $def) {
+                        $type = $def['type'];
+                        $commands .= "            \$table->{$type}('{$column}');\n";
                     }
-                    \$commands .= "        });\n\n";
-                } elseif (isset(\$tableDiff['columns'])) {
-                    foreach (\$tableDiff['columns'] as \$column => \$colDiff) {
-                        if (\$colDiff['action'] === 'add') {
-                            \$type = \$colDiff['definition']['type'];
-                            \$commands .= "        Schema::table('{$tableName}', function (Blueprint \$table) {\n";
-                            \$commands .= "            \$table->{$type}('{$column}');\n";
-                            \$commands .= "        });\n\n";
+                    $commands .= "        });\n\n";
+                } elseif (isset($tableDiff['columns'])) {
+                    foreach ($tableDiff['columns'] as $column => $colDiff) {
+                        if ($colDiff['action'] === 'add') {
+                            $type = $colDiff['definition']['type'];
+                            $commands .= "        Schema::table('{$tableName}', function (Blueprint \$table) {\n";
+                            $commands .= "            \$table->{$type}('{$column}');\n";
+                            $commands .= "        });\n\n";
                         }
                     }
                 }
             }
         }
-        return \$commands;
+        return $commands;
     }
 
     /**
      * Gera os comandos do método `down` para reverter as alterações.
      */
-    protected function generateDownCommands(array \$diff)
+    protected function generateDownCommands(array $diff)
     {
-        \$commands = "";
-        if (isset(\$diff['tables'])) {
-            foreach (\$diff['tables'] as \$tableName => \$tableDiff) {
-                if (\$tableDiff['action'] === 'create') {
-                    \$commands .= "        Schema::dropIfExists('{$tableName}');\n\n";
-                } elseif (isset(\$tableDiff['columns'])) {
-                    foreach (\$tableDiff['columns'] as \$column => \$colDiff) {
-                        if (\$colDiff['action'] === 'add') {
-                            \$commands .= "        Schema::table('{$tableName}', function (Blueprint \$table) {\n";
-                            \$commands .= "            \$table->dropColumn('{$column}');\n";
-                            \$commands .= "        });\n\n";
+        $commands = "";
+        if (isset($diff['tables'])) {
+            foreach ($diff['tables'] as $tableName => $tableDiff) {
+                if ($tableDiff['action'] === 'create') {
+                    $commands .= "        Schema::dropIfExists('{$tableName}');\n\n";
+                } elseif (isset($tableDiff['columns'])) {
+                    foreach ($tableDiff['columns'] as $column => $colDiff) {
+                        if ($colDiff['action'] === 'add') {
+                            $commands .= "        Schema::table('{$tableName}', function (Blueprint \$table) {\n";
+                            $commands .= "            \$table->dropColumn('{$column}');\n";
+                            $commands .= "        });\n\n";
                         }
                     }
                 }
             }
         }
-        return \$commands;
+        return $commands;
     }
 }
